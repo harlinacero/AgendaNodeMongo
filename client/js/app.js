@@ -36,16 +36,21 @@ $(document).ready(function() {
 		droppable: true,
 		navLinks: true, // can click day/week names to navigate views
 		eventLimit: true, // allow "more" link when too many events
-		events: function(){
-			cargarEventos()			
+		// events: function(){
+			// //cargarEventos()			
+			// url: 'users/cargarEventos',
+			
+		// },
+		eventSources:{
+			url:'eventos/cargarEventos',
 		},
 		eventDrop: function(event){
             actualizarEvento(event)		
         },
 		eventDragStart: (event,jsEvent) => {
             $('.delete-btn').find('img').attr('src', "img/trash-open.png");
-            $('.delete-btn').css('background-color', '#a70f19')
-
+            $('.delete-btn').css('background-color', '#a70f19');
+			eliminarEvento(event);
           },
 		loading: function(bool) {
 			$('#loading').toggle(bool);
@@ -99,6 +104,7 @@ function AgregarEvento(titulo, fechaInicial, fechaFinal, horaInicial, horaFinal)
 	  },
       success: function(data) {
         alert(data);
+		location.reload();
       },error: function(error){
 		  console.log(error);
 	  }
@@ -106,48 +112,40 @@ function AgregarEvento(titulo, fechaInicial, fechaFinal, horaInicial, horaFinal)
 }
 
 function actualizarEvento(evento){
-	let id = evento._id,
+	let id = evento.id,
 		title = evento.title,
-		start = moment(evento.start).format('YYYY-MM-DD HH:mm:ss'),
-		end = moment(evento.end).format('YYYY-MM-DD HH:mm:ss'),
-		form_data = new FormData(),
-		start_date,
-		end_date,
-		start_hour,
-		end_hour
-
-	start_date = start.substr(0,10)
-	end_date = end.substr(0,10)
-	start_hour = start.substr(11,8)
-	end_hour = end.substr(11,8)
-
-
-	form_data.append('id', id)
-	form_data.append('title', title)
-	form_data.append('start_date', start_date)
-	form_data.append('end_date', end_date)
-	form_data.append('start_hour', start_hour)
-	form_data.append('end_hour', end_hour)
-		
-	console.log(id);
+		date_start = moment(evento.start).format('DD/MM/YYYY'),
+		date_end = moment(evento.end).format('DD/MM/YYYY');
+		hour_start = moment(evento.hstart).format('HH:mm:ss'),
+		hour_end = moment(evento.hend).format('HH:mm:ss');
 		
 	$.ajax({
-	  url: 'eventos/actulizar_evento',
+	  url: 'eventos/actulizarEvento',
 	  datatype: "json",
 	  cache: false,
+	  method: 'POST',
 	  processdata: false,
 	  contenttype: false,
 	  data: {
-		  id: id
+		  id: id,
+		  title:title,
+		  start:date_start,
+		  end: date_end,
+		  hstart: hour_start,
+		  hend: hour_end
 	  },
-	  type: 'get',
 	  success: function(response){
 		alert(response)
 	  },
 	  error: function(error){
-		alert("error en la comunicación con el servidor");
+		alert(error);
 	  }
     })
 		
+}
+
+function eliminarEvento(evento){
+	var id = evento._id;
+	console.log(id);
 }
 	
