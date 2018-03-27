@@ -1,0 +1,7 @@
+1. Abrir una línea de comandos en la ubicación del archivo y ejecutar: node create_usuario.js,
+en este momento se creará la base dedatos y la colección usuario.
+
+2. En la misma línea ejecutar: node index.js, lo que iniciará la aplicación en el puerto 8082
+
+3. Ingresar en el login con usuario: "admin" y contraseña: "clave"
+

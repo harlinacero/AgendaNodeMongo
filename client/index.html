@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión</title>
-    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="/css/styles.css"/>
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Neucha" rel="stylesheet">
   </head>
@@ -13,24 +13,25 @@
     <div class="loginContainer">
       <div class="loginTitle">Inicio de Sesión</div>
       <div class="fields-Container">
-        <input type="text" id="user" placeholder="Usuario..." />
-        <input type="password" id="pass" placeholder="Contraseña..." />
+        <input type="text" id="user" placeholder="Usuario..." required="true"/>
+        <input type="password" id="pass" placeholder="Contraseña..." required="true"/>
         <button id="login" class="loginButton">Ingresar</button>
       </div>
     </div>
-    <script src="js/jquery.js"></script>
+    <script src="/js/jquery.js"></script>
     <script>
-        $('.loginButton').on('click', function(event) {
-            var nom = $('#user').val();
-            var pas = $('#pass').val();
-            //console.log(nom+"  "+pas);
-            if (nom != "" && pas != "") {
-                $.post('/users/login',{user:nom, pass:pas}, function(response) {
-                    console.log(response);
-                    if (response === "Validado") {
-                        window.location.href = "http://localhost:8082/main.html";						
-                    }else{
-                        alert("No existe el usuario");
+        var nombreUsuario = $('#user')
+        var pass = $('#pass')
+        $('.loginButton').on('click', function(event) {			
+            if (nombreUsuario.val() != "" && pass.val() != "") {
+                $.post('/login',{user: nombreUsuario.val(), pass: pass.val()}, function(response) {
+                    if (response == "Validado") {
+                        window.location.href = "http://localhost:8082/main.html"//redirección a la página principal
+                    }
+                    else {
+                        alert('Usuario o clave errada, verifique...');
+                        $('#pass').val('');
+                        $('#user').val('');
                     }
                 })
             } else {
