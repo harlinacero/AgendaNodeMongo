@@ -1,7 +1,7 @@
 'use strict';
 
-let MongoClient = require('mongodb').MongoClient,
-    bcrypt = require('bcrypt-nodejs');
+let MongoClient = require('mongodb').MongoClient;
+    // bcrypt = require('bcrypt-nodejs');
 
 const url = 'mongodb://localhost/agenda';//url de conexión
 
@@ -18,9 +18,9 @@ MongoClient.connect(url, (err, db) => {//función de conexión
             console.log('Usuario registrado anteriormente');
         }
         else {
-            let salt = bcrypt.genSaltSync();
-            let password_hash = bcrypt.hashSync('clave', salt);//encriptación de la contraseña
-            Usuarios.insertOne({nomusu: 'admin', clave: password_hash}, (err, doc) => {//insercióon del usuario en la base de datos
+            // let salt = bcrypt.genSaltSync();
+            // let password_hash = bcrypt.hashSync('clave', salt);//encriptación de la contraseña
+            Usuarios.insertOne({nomusu: 'admin', clave: 'clave'}, (err, doc) => {//insercióon del usuario en la base de datos
                 if (err) throw err;
                 console.log('usuario registrado correctamente...', JSON.stringify(doc));
             });

@@ -1,6 +1,6 @@
 'use strict';
 
-const bcrypt = require('bcrypt-nodejs');
+// const bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(db) {
 
@@ -9,10 +9,11 @@ module.exports = function(db) {
     this.verificaUsuario = (reg, callback) => {//buscar la existencia del usuario
         let where = {nomusu: reg.user};
 
-        Usuarios.findOne(where, (err, doc) => {//búsqueda del usuario con los alores del form
-            if (err) 
+        Usuarios.findOne(where, (err, doc) => {//busca del usuario con los valores del form
+            console.log(doc);
+			if (err) 
                 callback(err);
-            else if (bcrypt.compareSync(reg.pass, doc.clave))
+            else if (reg.pass === doc.clave)
                 callback(null, doc);
             else
                 callback(null, false);
